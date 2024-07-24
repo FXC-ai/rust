@@ -27,33 +27,41 @@
 <a href="#27" id="27">27</a>
 <a href="#28" id="28">28</a>
 <a href="#29" id="29">29</a>
+<a href="#30" id="30">30</a>
+<a href="#31" id="31">31</a>
+<a href="#32" id="32">32</a>
+<a href="#33" id="33">33</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::io;
 <span class="kw">use </span>rand::Rng;
 <span class="kw">use </span>std::cmp::Ordering;
 
 <span class="kw">fn </span>main() 
 {
-    <span class="macro">println!</span>(<span class="string">"Proposer un nombre :"</span>);
-    <span class="kw">let </span><span class="kw-2">mut </span>supposition = String::new();
-    
     <span class="kw">let </span>nombre_secret = rand::thread_rng().gen_range(<span class="number">1</span>..<span class="number">101</span>);
-    <span class="macro">println!</span>(<span class="string">"Le nombre secret est : {}"</span>, nombre_secret);
+    <span class="comment">// println!("Le nombre secret est : {}", nombre_secret);
     
-    io::stdin()
-    .read_line(<span class="kw-2">&amp;mut </span>supposition)
-    .expect(<span class="string">"Echec de la lecture de l'entrée utilisateur."</span>);
-    
-    <span class="kw">let </span>supposition: u32 = supposition.trim().parse().expect(<span class="string">"Veuillez entrer un nombre !"</span>);
-    
-    <span class="kw">match </span>supposition.cmp(<span class="kw-2">&amp;</span>nombre_secret)
-    {
-        Ordering::Less =&gt; <span class="macro">println!</span>(<span class="string">"C'est plus !"</span>),
-        Ordering::Greater =&gt; <span class="macro">println!</span>(<span class="string">"C'est moins !"</span>),
-        Ordering::Equal =&gt; <span class="macro">println!</span>(<span class="string">"Vous avez gagné !"</span>),
+    </span><span class="kw">loop
+    </span>{
+        <span class="macro">println!</span>(<span class="string">"Proposer un nombre :"</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>supposition = String::new();
+        
+        io::stdin().read_line(<span class="kw-2">&amp;mut </span>supposition).expect(<span class="string">"Echec de la lecture de l'entrée utilisateur."</span>);
+        
+        <span class="kw">let </span>supposition: u32 = <span class="kw">match </span>supposition.trim().parse()
+        {
+            <span class="prelude-val">Ok</span>(nb) =&gt; nb,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">continue</span>,
+        };
+        
+        <span class="kw">match </span>supposition.cmp(<span class="kw-2">&amp;</span>nombre_secret)
+        {
+            Ordering::Less =&gt; <span class="macro">println!</span>(<span class="string">"C'est plus !"</span>),
+            Ordering::Greater =&gt; <span class="macro">println!</span>(<span class="string">"C'est moins !"</span>),
+            Ordering::Equal =&gt; {
+                <span class="macro">println!</span>(<span class="string">"Vous avez gagné !"</span>);
+                <span class="kw">break</span>;
+            }
+        }
     }
-    
-
-    <span class="macro">println!</span>(<span class="string">"Votre nombre est : {}"</span>, supposition);
-
 }
 </code></pre></div></section></main></body></html>
