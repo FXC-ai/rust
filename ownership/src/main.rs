@@ -1,19 +1,13 @@
 fn main() {
-    let s1 = donne_possession();
-  
-    let s2 = String::from("hello");
-  
-    let s3 = prend_et_rend(s2);
+    let s1 = String::from("helwertwertwertwertwertwewertwertwertwertwlo");
 
-    println!("{} {}", s1, s3);
-}
-  
-fn donne_possession() -> String 
-{
-    let texte = String::from("yours");
-    texte
+    let (s2, taille) = calculer_taille(s1);
+
+    println!("La taille de '{}' est {}.", s2, taille);
 }
 
-fn prend_et_rend(texte: String) -> String {
-    texte
+fn calculer_taille(s: String) -> (String, usize) {
+    let taille = s.len(); // len() retourne la taille d'une String.
+
+    (s, taille)
 }
