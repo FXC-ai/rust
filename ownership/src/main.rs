@@ -1,97 +1,53 @@
-struct User
+struct Cercle
 {
-    actif: bool,
-    pseudo: String,
-    email: String,
-    nombre_de_connexions: u64,
+    id: u32,
+    rayon: f32,
 }
 
-struct Color(i32,i32,i32);
-struct Point(i32,i32,i32);
-
-fn affiche_color(color : Color)
+impl Cercle
 {
-    println!("color = {} {} {}", color.0, color.1, color.2);
-}
-
-fn affiche_point(point : Point)
-{
-    println!("point = {} {} {}", point.0, point.1, point.2);
-}
-
-fn create_user(email: String, pseudo: String) -> User
-{
-    User
+    fn aire(self : &Self) -> f32 // equivalent à &self 
     {
-        email: email,
-        pseudo: pseudo,
-        actif: true,
-        nombre_de_connexions: 0,
+        self.rayon * 3.14 * 2.0
     }
-}
 
-fn create_user_raccourci(email: String, pseudo: String) -> User
-{
-    User
+    fn change_id(self : &mut Self, id : u32) // equivalent à &mut self
     {
-        email,
-        pseudo,
-        actif: true,
-        nombre_de_connexions: 0,
+        self.id = id;
     }
-}
 
-struct ToujoursEgal;
-
-fn main()
-{
-
-    let user0 = User
+    fn change_owner(self : Self) -> Cercle // equivalent à self
     {
-        email: String::from("user0@rust.com"),
-        pseudo: String::from("user0"),
-        actif: true,
-        nombre_de_connexions : 54,
-    };
+        Self{id : self.id, rayon : self.rayon}
+    }
 
-    println!("{}", user0.pseudo);
-
-    let mut user1 = create_user(String::from("user1@rust.com"), String::from("user1"));
-
-    user1.email = String::from ("user1@rust.ch");
-
-    println!("{} {}", user1.pseudo, user1.email);
-
-    let user4 = create_user_raccourci(String::from("user4@rust.com"), String::from("user4"));
-
-    println!("{}", user4.pseudo);
-
-    let user2 = User
+    fn able_fit_in(&self, other : &Cercle) -> bool
     {
-        email: String::from("user2@rust.com"),
-        ..user1
-    };
-    println!("{} {}", user2.pseudo, user2.email);
+        self.aire() > other.aire()
+    }
 
-    let user3 = User
+    fn create_cercle (id : u32, rayon : f32) -> Cercle
     {
-        email : String::from("user3@rust.com"),
-        pseudo : String::from("user3"),
-        ..user2
-    };
-    println!("{} {}", user2.pseudo, user2.email);
-    println!("{} {}", user3.pseudo, user3.email);
-
-
-    let mon_point = Point(0,1,2);
-
-    affiche_point(mon_point);
-
-    let ma_couleur = Color(193,10,255);
-
-    affiche_color(ma_couleur);
-
-    let sujet = ToujoursEgal;
+        Cercle {id : id, rayon : rayon}
+    }
 
 }
 
+fn main() {
+    let mut cercle0 = Cercle {id:0, rayon:5.0};
+
+    (&mut cercle0).change_id(42);
+    println!("{} Surface du cercle = {}",cercle0.id, cercle0.aire());
+
+    let cercle1 = cercle0.change_owner();
+    println!("Surface du cercle = {}", cercle1.aire());
+    
+    let cercle2 = Cercle {id : 2, rayon:8.8};
+
+    println!("Cercle2 peut contenir cercle1 : {}", cercle2.able_fit_in(&cercle1));
+    println!("Cercle1 peut contenir cercle2 : {}", cercle1.able_fit_in(&cercle2));
+
+    let cercle3 = Cercle::create_cercle(3, 5.6);
+    println!("Surface du cercle = {}", cercle3.aire());
+
+}
