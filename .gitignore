@@ -1,4 +1,6 @@
 /**
 !/**/
 !*.rs
+!*.cpp
+!*.c
 !.gitignore
