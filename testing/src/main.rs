@@ -119,37 +119,17 @@ impl<X1, Y1> Point<X1, Y1>
 
 fn main()
 {
-    let p0 = Point{x:5,y:10};
-    let p1 = Point{x:5.0,y:10};
-    let p2 = Point{x:5,y:10.0};
-    let mut p3 = Point{x:5.0,y:10.0};
+    let range = 10;
+    let mut optional_integers: Vec<Option<i8>> = vec![None];
 
-    println!("{} {}", p2.x(), p2.y());
-    println!("{}", p0.add_coord());
+    for i in 1..=range {
+        optional_integers.push(Some(i));
+    }
 
-    p3.set_X(42.0);
-    println!("{} {}", p3.get_X(), p3.get_Y());
-    println!("{} {}", p3.x, p3.y);
+    println!("{:?}", optional_integers);
 
-    println!("{} {}", p0.x(), p0.y());
-    println!("{}", p0.get_Xi32());
-    // println!("{} {}", p0.x, p0.y);
-    
-    let p4 = Point{x:String::from("Jeu de go"), y:"tu trois hp"};
-    println!("{}", p4.get_XString());
-    println!("{}", p4.x);
-    println!("{}", p4.get_Ystr());
-    println!("{}", p4.y);
+    let mut cursor = range;
 
-    let mut p5 = Point{x:&String::from("loi des grands"), y:"pagaille du petit"};
-    println!("{}", p5.get_XrefString());
-    println!("{}", p5.x());
-    // p5.x = &String::from("oil sed sdnarg");
-    let binding = String::from("ta tatie t'a tout dit");
-    p5.set_x(&binding);
-    println!("{}", p5.x);
-    println!("{}", p5.y());
+    println!("{} {}", range, cursor);
 
-    let p6 = Point{x:269000000, y:32000000};
-    println!("{}", p6.get_x_i64());
 }
