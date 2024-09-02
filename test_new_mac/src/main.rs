@@ -15,6 +15,7 @@ trait friend_abilities
     fn get_name_friend(&self) -> &str;
     fn set_name_friend(&mut self, new_name : String);
     fn get_origin(&self) -> &str;
+    fn pppp (&self) {println!("{}", "I have the friend abilities");}
 }
 
 impl friend_abilities for friend
@@ -120,6 +121,26 @@ fn which_abilities<T, U>(t:&T, u:&U) -> i32
     42
 }
 
+fn give_a_colleague () -> impl colleague_abilities
+{
+    colleague {name:String::from("Simbad"), company:String::from("Walt Disney")}
+}
+
+
+fn le_plus_grand<T : PartialOrd>(liste: &[T]) -> &T
+{
+    let mut  biggest:&T = &liste[0];
+
+    for element in liste 
+    {
+        if element > biggest 
+        {
+            biggest = element;
+        }
+    }
+
+    biggest
+}
 
 fn main()
 {
@@ -132,4 +153,8 @@ fn main()
     println!("{}", Duncan.sport_capacity(sports::climbimg));
     show_friend(&Duncan);
     which_abilities(&Duncan, &Alice);
+    println!("{}", give_a_colleague().get_company());
+    let my_tab = [12, 0, -16];
+    println!("{}", le_plus_grand(&my_tab));
+    (&Alice).pppp();
 }
