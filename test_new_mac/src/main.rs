@@ -3,7 +3,6 @@ struct colleague
     name : String,
     company : String,
 }
-
 struct friend
 {
     name : String,
@@ -81,6 +80,11 @@ fn show_friend (obj : &impl friend_abilities)
     println!("{} {}", obj.get_name_friend(), obj.get_origin());
 }
 
+fn show_friend_again<T : friend_abilities>(obj : &T)
+{
+    println!("{} {}", obj.get_name_friend(), obj.get_origin());
+}
+
 fn show <T : colleague_abilities + friend_abilities>(element : &T)
 {
     println!("{} {} {} {}", element.get_name_colleague(), element.get_name_friend(), element.get_company(), element.get_origin());
@@ -138,13 +142,13 @@ fn le_plus_grand<T : PartialOrd>(liste: &[T]) -> &T
             biggest = element;
         }
     }
-
     biggest
 }
 
+impl <T : friend_abilities>
+
 fn main()
 {
-
     let mut  Alice = colleague{name : String::from(""), company : String::from("Mairie")};
     Alice.set_name_colleague(String::from("Alice"));
     show(&Alice);
@@ -157,4 +161,5 @@ fn main()
     let my_tab = [12, 0, -16];
     println!("{}", le_plus_grand(&my_tab));
     (&Alice).pppp();
+    show_friend_again(&Duncan);
 }
