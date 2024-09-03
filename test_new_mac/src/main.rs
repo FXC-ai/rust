@@ -1,165 +1,105 @@
-struct colleague
+use std::fmt::Display;
+
+fn donne_s0 <'a>(st0 : &'a str, st1 : &  str) -> &'a str
 {
-    name : String,
-    company : String,
-}
-struct friend
-{
-    name : String,
-    origin : String,
+    println!("{} : ", st1);
+    st0
 }
 
-trait friend_abilities
+fn la_plus_longue<'a>(st0 : &'a str, st1 : &'a str) ->&'a str
 {
-    fn get_name_friend(&self) -> &str;
-    fn set_name_friend(&mut self, new_name : String);
-    fn get_origin(&self) -> &str;
-    fn pppp (&self) {println!("{}", "I have the friend abilities");}
-}
-
-impl friend_abilities for friend
-{
-    fn get_name_friend(&self) -> &str {
-        &self.name
-    }
-    fn set_name_friend(&mut self, new_name : String) {
-        self.name = new_name;
-    }
-    fn get_origin(&self) -> &str {
-        &self.origin
-    }
-}
-
-impl friend_abilities for colleague
-{
-    fn get_name_friend(&self) -> &str {
-        &self.name
-    }
-    fn set_name_friend(&mut self, new_name : String) {
-        self.name = new_name;
-    }
-    fn get_origin(&self) -> &str {
-        &self.company
-    }
-}
-trait colleague_abilities
-{
-    fn get_name_colleague(&self) -> &str;
-    fn set_name_colleague(&mut self, new_name : String);
-    fn get_company(&self) -> &str;
-}
-
-impl colleague_abilities for colleague
-{
-    fn get_name_colleague(&self) -> &str {
-        &self.name
-    }
-    fn set_name_colleague(&mut self, new_name : String) {
-        self.name = new_name;
-    }
-    fn get_company(&self) -> &str {
-        &self.company
-    }
-}
-
-impl colleague_abilities for friend
-{
-    fn get_name_colleague(&self) -> &str {
-        &self.name
-    }
-    fn set_name_colleague(&mut self, new_name : String) {
-        self.name = new_name;
-    }
-    fn get_company(&self) -> &str {
-        &self.origin
-    }
-}
-
-fn show_friend (obj : &impl friend_abilities)
-{
-    println!("{} {}", obj.get_name_friend(), obj.get_origin());
-}
-
-fn show_friend_again<T : friend_abilities>(obj : &T)
-{
-    println!("{} {}", obj.get_name_friend(), obj.get_origin());
-}
-
-fn show <T : colleague_abilities + friend_abilities>(element : &T)
-{
-    println!("{} {} {} {}", element.get_name_colleague(), element.get_name_friend(), element.get_company(), element.get_origin());
-}
-
-enum sports
-{
-    running,
-    climbimg,
-    skiTouring,
-}
-
-trait other_abilities
-{
-    fn sport_capacity (&self, sport : sports) -> String;
-}
-
-impl other_abilities for friend
-{
-    fn sport_capacity (&self, sport : sports) -> String
+    if st0.len() > st1.len()
     {
-        match sport
-        {
-            sports::running => {"Alexandre Boucheix".to_string()},
-            sports::climbimg => {"Chris Charma".to_string()},
-            sports::skiTouring => {"Lena Bonel".to_string()},
-        }
+        st0
     }
-}
-
-fn which_abilities<T, U>(t:&T, u:&U) -> i32
-    where 
-        T:friend_abilities + other_abilities,
-        U:colleague_abilities
-{
-    println!("{} possede friend_abilities et other_abilities", t.get_name_friend());
-    println!("{} possede uniquement colleague_abilities", u.get_name_colleague());
-    42
-}
-
-fn give_a_colleague () -> impl colleague_abilities
-{
-    colleague {name:String::from("Simbad"), company:String::from("Walt Disney")}
-}
-
-
-fn le_plus_grand<T : PartialOrd>(liste: &[T]) -> &T
-{
-    let mut  biggest:&T = &liste[0];
-
-    for element in liste 
+    else
     {
-        if element > biggest 
-        {
-            biggest = element;
-        }
+        st1
     }
-    biggest
+}
+struct MyStruct<'a>
+{
+    s: &'a str,
 }
 
-impl <T : friend_abilities>
+impl<'a> MyStruct<'a>
+{
+    fn niveau (&self) -> i32
+    {
+        42
+    }
+    fn announce_and_display(&self, announcement: &str) -> &str
+    {
+        println!("{}", announcement);
+        self.s
+    }
+}
 
+fn fct_ex<'a, T : Display>(x: &'a str, y:&'a str, ann : T) -> &'a str
+{
+    println!("{}", ann);
+    if x.len() > y.len()
+    {
+        x
+    }
+    else
+    {
+        y
+    }
+}
 fn main()
 {
-    let mut  Alice = colleague{name : String::from(""), company : String::from("Mairie")};
-    Alice.set_name_colleague(String::from("Alice"));
-    show(&Alice);
-    let Duncan = friend{name : String::from("Duncan"), origin : String::from("Martigny")};
-    show(&Duncan);
-    println!("{}", Duncan.sport_capacity(sports::climbimg));
-    show_friend(&Duncan);
-    which_abilities(&Duncan, &Alice);
-    println!("{}", give_a_colleague().get_company());
-    let my_tab = [12, 0, -16];
-    println!("{}", le_plus_grand(&my_tab));
-    (&Alice).pppp();
-    show_friend_again(&Duncan);
+    let st0 = String::from("hello");
+
+    let resultat;
+
+    {
+        let st1 = String::from("donne_s0");
+        resultat = donne_s0(st0.as_str(), st1.as_str());
+    }
+    println!("{}", resultat);
+    
+    println!("---------------------------------------------------------");
+
+    {
+        let s0 = String::from("Hellofff");
+
+        {
+            let s1 = String::from("World");
+            let r = la_plus_longue(s0.as_str(), s1.as_str());
+            println!("{}", r);
+        }
+    }
+    println!("---------------------------------------------------------");
+
+    {
+        let s0 = String::from("Hellofff");
+        let s1 = String::from("World");
+
+        {
+            let r = la_plus_longue(s0.as_str(), s1.as_str());
+            println!("{}", r);
+        }        
+    }
+
+    println!("---------------------------------------------------------");
+
+    // let s = String::from("double 2 c est mieux");
+    let uneMyStruct = MyStruct{s:"double 1 c est moins bien"};
+    println!("{}", uneMyStruct.s);
+    println!("{}", uneMyStruct.niveau());
+    let r = uneMyStruct.announce_and_display("Hello");
+    println!("{}", r);
+
+    println!("---------------------------------------------------------");
+
+    let s: &'static str = "le toit de la maison";
+
+    println!("{}", s);
+
+    println!("---------------------------------------------------------");
+
+    fct_ex("x", "y", "ann");
+
+
 }
