@@ -1,105 +1,76 @@
-use std::fmt::Display;
+use std::thread;
+use std::time::Duration;
 
-fn donne_s0 <'a>(st0 : &'a str, st1 : &  str) -> &'a str
-{
-    println!("{} : ", st1);
-    st0
+fn simuler_gros_calcul(intensite: u32) -> u32 {
+    println!("calcul très lent ...");
+    thread::sleep(Duration::from_secs(2));
+    intensite
 }
 
-fn la_plus_longue<'a>(st0 : &'a str, st1 : &'a str) ->&'a str
+struct Cache<T>
+where 
+    T: Fn(u32) -> u32,
 {
-    if st0.len() > st1.len()
-    {
-        st0
-    }
-    else
-    {
-        st1
-    }
-}
-struct MyStruct<'a>
-{
-    s: &'a str,
+    calcul: T,
+    valeur:Option<u32>,
 }
 
-impl<'a> MyStruct<'a>
+impl<T> Cache<T>
+where
+    T: Fn(u32) -> u32
 {
-    fn niveau (&self) -> i32
+    fn new(calcul: T) -> Cache<T>
     {
-        42
-    }
-    fn announce_and_display(&self, announcement: &str) -> &str
-    {
-        println!("{}", announcement);
-        self.s
-    }
-}
-
-fn fct_ex<'a, T : Display>(x: &'a str, y:&'a str, ann : T) -> &'a str
-{
-    println!("{}", ann);
-    if x.len() > y.len()
-    {
-        x
-    }
-    else
-    {
-        y
-    }
-}
-fn main()
-{
-    let st0 = String::from("hello");
-
-    let resultat;
-
-    {
-        let st1 = String::from("donne_s0");
-        resultat = donne_s0(st0.as_str(), st1.as_str());
-    }
-    println!("{}", resultat);
-    
-    println!("---------------------------------------------------------");
-
-    {
-        let s0 = String::from("Hellofff");
-
-        {
-            let s1 = String::from("World");
-            let r = la_plus_longue(s0.as_str(), s1.as_str());
-            println!("{}", r);
+        Cache {
+            calcul,
+            valeur: None,
         }
     }
-    println!("---------------------------------------------------------");
-
+    fn valeur (&mut self, arg: u32) -> u32
     {
-        let s0 = String::from("Hellofff");
-        let s1 = String::from("World");
-
-        {
-            let r = la_plus_longue(s0.as_str(), s1.as_str());
-            println!("{}", r);
-        }        
+        match self.valeur {
+            Some(v) => v,
+            None => {
+                let v = (self.calcul)(arg);
+                self.valeur = Some(v);
+                v
+            },
+        }
     }
+}
 
-    println!("---------------------------------------------------------");
+fn generer_exercices(intensite: u32, nombre_aleatoire: u32) 
+{
+    let mut resultat_lent = Cache::new(|nombre|{
+        println!("calcul très lent ...");
+        thread::sleep(Duration::from_secs(2));
+        nombre
+    });
 
-    // let s = String::from("double 2 c est mieux");
-    let uneMyStruct = MyStruct{s:"double 1 c est moins bien"};
-    println!("{}", uneMyStruct.s);
-    println!("{}", uneMyStruct.niveau());
-    let r = uneMyStruct.announce_and_display("Hello");
-    println!("{}", r);
+    if intensite < 25 {
+        println!(
+            "Aujourd'hui, faire {} pompes !",
+            resultat_lent.valeur(intensite)
+        );
+        println!(
+            "Ensuite, faire {} abdominaux !",
+            resultat_lent.valeur(intensite)
+        );
+    } else {
+        if nombre_aleatoire == 3 {
+            println!("Faites une pause aujourd'hui ! Rappelez-vous de bien vous hydrater !");
+        } else {
+            println!(
+                "Aujourd'hui, courrez pendant {} minutes !",
+                resultat_lent.valeur(intensite)
+            );
+        }
+    }
+}
 
-    println!("---------------------------------------------------------");
+fn main() {
+    let valeur_utilisateur_simule = 100;
+    let nombre_aleatoire_simule = 3;
 
-    let s: &'static str = "le toit de la maison";
-
-    println!("{}", s);
-
-    println!("---------------------------------------------------------");
-
-    fct_ex("x", "y", "ann");
-
-
+    generer_exercices(valeur_utilisateur_simule, nombre_aleatoire_simule);
 }
