@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::thread;
 use std::time::Duration;
 
@@ -12,7 +13,7 @@ where
     T: Fn(u32) -> u32,
 {
     calcul: T,
-    valeur:Option<u32>,
+    valeur:HashMap<u32, u32>,
 }
 
 impl<T> Cache<T>
@@ -23,19 +24,26 @@ where
     {
         Cache {
             calcul,
-            valeur: None,
+            valeur: HashMap::new(),
         }
     }
+
     fn valeur (&mut self, arg: u32) -> u32
     {
-        match self.valeur {
-            Some(v) => v,
-            None => {
-                let v = (self.calcul)(arg);
-                self.valeur = Some(v);
-                v
-            },
+
+        println!("{:?}", self.valeur);
+
+        match self.valeur.get(&arg)
+        {
+            Some(v) => {*v},
+            None => 
+            {
+                let r = (self.calcul)(arg);
+                self.valeur.insert(arg, r);
+                r
+            }
         }
+
     }
 }
 
@@ -69,8 +77,22 @@ fn generer_exercices(intensite: u32, nombre_aleatoire: u32)
 }
 
 fn main() {
-    let valeur_utilisateur_simule = 100;
-    let nombre_aleatoire_simule = 3;
+    let mut valeur_utilisateur_simule = 10;
+    let mut nombre_aleatoire_simule = 2;
 
     generer_exercices(valeur_utilisateur_simule, nombre_aleatoire_simule);
+
+
+    valeur_utilisateur_simule = 12000;
+    nombre_aleatoire_simule = 3;
+
+
+    generer_exercices(valeur_utilisateur_simule, nombre_aleatoire_simule);
+
+    valeur_utilisateur_simule = 12000;
+    nombre_aleatoire_simule = 7;
+
+
+    generer_exercices(valeur_utilisateur_simule, nombre_aleatoire_simule);
+
 }
