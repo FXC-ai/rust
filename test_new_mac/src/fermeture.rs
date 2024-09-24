@@ -82,16 +82,13 @@ fn main() {
 
     generer_exercices(valeur_utilisateur_simule, nombre_aleatoire_simule);
 
-
     valeur_utilisateur_simule = 12000;
     nombre_aleatoire_simule = 3;
-
 
     generer_exercices(valeur_utilisateur_simule, nombre_aleatoire_simule);
 
     valeur_utilisateur_simule = 12000;
     nombre_aleatoire_simule = 7;
-
 
     generer_exercices(valeur_utilisateur_simule, nombre_aleatoire_simule);
 
