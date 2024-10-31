@@ -1,6 +1,10 @@
 use std::io::Result;
 fn main() -> Result<()>
 {
-    prost_build::compile_protos(&["src/items.proto"], &["src/"])?;
+    let mut config = prost_build::Config::new();
+
+    config.out_dir("src");
+    config.compile_protos(&["src/items.proto"], &["src/"])?;
+
     Ok(())
 }
