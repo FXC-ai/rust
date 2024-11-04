@@ -27,13 +27,6 @@ pub mod type_sqlx {
     }
 }
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct BigDecimal {
-    #[prost(int64, tag = "1")]
-    pub unscaled_value: i64,
-    #[prost(int32, tag = "2")]
-    pub scale: i32,
-}
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NaiveDate {
     #[prost(int32, tag = "1")]
     pub year: i32,
