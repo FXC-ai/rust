@@ -50,6 +50,4 @@ pub struct Void {}
 pub struct RowOfDb {
     #[prost(message, repeated, tag = "1")]
     pub cols: ::prost::alloc::vec::Vec<TypeSqlx>,
-    #[prost(string, repeated, tag = "2")]
-    pub cols_name: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
